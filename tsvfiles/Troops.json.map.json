@@ -3,39 +3,39 @@
   "mappings": [
     {
       "list_num": 1,
-      "json_path": "$.[0].parameters.[4]"
+      "json_path": "$.[1].pages.[0].list.[2].parameters.[4]"
     },
     {
       "list_num": 2,
-      "json_path": "$.[1].parameters.[0].[0]"
+      "json_path": "$.[1].pages.[0].list.[3].parameters.[0]"
     },
     {
       "list_num": 3,
-      "json_path": "$.[1].parameters.[0].[1]"
+      "json_path": "$.[1].pages.[0].list.[4].parameters.[0].[0]"
     },
     {
       "list_num": 4,
-      "json_path": "$.[2].parameters.[0]"
+      "json_path": "$.[1].pages.[0].list.[4].parameters.[0].[1]"
     },
     {
       "list_num": 5,
-      "json_path": "$.[3].parameters.[1]"
+      "json_path": "$.[1].pages.[0].list.[4].parameters.[0].[2]"
     },
     {
       "list_num": 6,
-      "json_path": "$.[4].parameters.[4]"
+      "json_path": "$.[1].pages.[0].list.[5].parameters.[1]"
     },
     {
       "list_num": 7,
-      "json_path": "$.[5].parameters.[0].[0]"
+      "json_path": "$.[2].pages.[0].list.[1].parameters.[0]"
     },
     {
       "list_num": 8,
-      "json_path": "$.[5].parameters.[0].[1]"
+      "json_path": "$.[2].pages.[0].list.[2].parameters.[4]"
     },
     {
       "list_num": 9,
-      "json_path": "$.[5].parameters.[0].[2]"
+      "json_path": "$.[2].pages.[1].list.[0].parameters.[1]"
     }
   ]
 }
