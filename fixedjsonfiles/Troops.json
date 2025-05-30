@@ -1,0 +1,75 @@
+[
+    {
+        "code": 101,
+        "indent": 1,
+        "parameters": [
+            "",
+            0,
+            0,
+            2,
+            "Coronel Chirridos"
+        ]
+    },
+    {
+        "code": 102,
+        "indent": 1,
+        "parameters": [
+            [
+                "Sí.",
+                "No."
+            ],
+            1,
+            0,
+            2,
+            0
+        ]
+    },
+    {
+        "code": 401,
+        "indent": 1,
+        "parameters": [
+            "Te sientes inútil."
+        ]
+    },
+    {
+        "code": 402,
+        "indent": 1,
+        "parameters": [
+            0,
+            "Sí, Comandante."
+        ]
+    },
+    {
+        "code": 101,
+        "indent": 2,
+        "parameters": [
+            "AnotherNpc",
+            1,
+            1,
+            3,
+            "General Miau"
+        ]
+    },
+    {
+        "code": 102,
+        "indent": 0,
+        "parameters": [
+            [
+                "Proceed",
+                "Cancelar",
+                "Ayuda"
+            ],
+            0,
+            0,
+            0,
+            0
+        ]
+    },
+    {
+        "code": 500,
+        "indent": 0,
+        "parameters": [
+            "This text should not be extracted."
+        ]
+    }
+]
