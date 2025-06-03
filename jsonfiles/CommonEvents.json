@@ -2,51 +2,38 @@
   null,
   {
     "id": 1,
-    "name": "CE_Welcome_Message",
-    "pages": [
-      {
-        "conditions": {},
-        "list": [
-          {"code": 101, "indent": 0, "parameters": ["Actor1_Portrait", 0, 0, 2, "Hello from Common Event 1!"]},
-          {"code": 401, "indent": 0, "parameters": ["This is a shared message available to all."]},
-          {"code": 102, "indent": 1, "parameters": [["Next", "Maybe Later", "Never"], 1, 0, 2, 0]}
-        ],
-        "span": 0
-      }
-    ]
+    "list": [
+      {"code": 101, "indent": 0, "parameters": ["", 0, 0, 2, "Sample Text for Common Event 1"]},
+      {"code": 401, "indent": 1, "parameters": ["Another message directly in CE 1."]},
+      {"code": 102, "indent": 0, "parameters": [["CE1_Opt1", "CE1_Opt2"], -1, 0, 2,0]}
+    ],
+    "name": "CE_Sample_DirectList_1",
+    "switchId": 1,
+    "trigger": 0
   },
   {
     "id": 2,
-    "name": "CE_System_Alert",
-    "pages": [
-      {
-        "conditions": {},
-        "list": [
-          {"code": 402, "indent": 0, "parameters": [0, "System Updated."]}
-        ],
-        "span": 0
-      },
-      {
-        "conditions": {},
-        "list": [
-          {"code": 101, "indent": 0, "parameters": ["", 0, 0, 2, "Please save your game."]},
-          {"code": 401, "indent": 0, "parameters": ["Unsaved data may be lost!"]}
-        ],
-        "span": 0
-      }
-    ]
+    "list": [
+      {"code": 402, "indent": 0, "parameters": [0, "Confirmation for CE 2."]},
+      {"code": 101, "indent": 1, "parameters": ["Portrait", 1, 1, 2, "Important system-wide announcement."]}
+    ],
+    "name": "CE_Sample_DirectList_2",
+    "switchId": 2,
+    "trigger": 1
   },
   {
     "id": 3,
-    "name": "CE_Empty_Event",
-    "pages": [
-      {
-        "conditions": {},
-        "list": [
-          {"code": 0, "indent": 0, "parameters": []}
-        ],
-        "span": 0
-      }
-    ]
+    "list": [
+      {"code": 0, "indent": 0, "parameters":[]}
+    ],
+    "name": "CE_Empty_List",
+    "switchId": 3,
+    "trigger": 0
+  },
+  {
+    "id": 4,
+    "name": "CE_No_List_At_All",
+    "switchId": 4,
+    "trigger": 0
   }
 ]

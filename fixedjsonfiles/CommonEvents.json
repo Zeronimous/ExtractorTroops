@@ -2,108 +2,88 @@
     null,
     {
         "id": 1,
-        "name": "CE_Welcome_Message",
-        "pages": [
+        "list": [
             {
-                "conditions": {},
-                "list": [
-                    {
-                        "code": 101,
-                        "indent": 0,
-                        "parameters": [
-                            "Actor1_Portrait",
-                            0,
-                            0,
-                            2,
-                            "¡Hola desde Evento Común 1!"
-                        ]
-                    },
-                    {
-                        "code": 401,
-                        "indent": 0,
-                        "parameters": [
-                            "Este es un mensaje compartido disponible para todos."
-                        ]
-                    },
-                    {
-                        "code": 102,
-                        "indent": 1,
-                        "parameters": [
-                            [
-                                "Siguiente",
-                                "Quizás Más Tarde",
-                                "Nunca"
-                            ],
-                            1,
-                            0,
-                            2,
-                            0
-                        ]
-                    }
-                ],
-                "span": 0
+                "code": 101,
+                "indent": 0,
+                "parameters": [
+                    "",
+                    0,
+                    0,
+                    2,
+                    "Texto Ejemplo Evento Común 1"
+                ]
+            },
+            {
+                "code": 401,
+                "indent": 1,
+                "parameters": [
+                    "Otro mensaje directo en EC 1."
+                ]
+            },
+            {
+                "code": 102,
+                "indent": 0,
+                "parameters": [
+                    [
+                        "EC1_Opción1",
+                        "EC1_Opción2"
+                    ],
+                    -1,
+                    0,
+                    2,
+                    0
+                ]
             }
-        ]
+        ],
+        "name": "CE_Sample_DirectList_1",
+        "switchId": 1,
+        "trigger": 0
     },
     {
         "id": 2,
-        "name": "CE_System_Alert",
-        "pages": [
+        "list": [
             {
-                "conditions": {},
-                "list": [
-                    {
-                        "code": 402,
-                        "indent": 0,
-                        "parameters": [
-                            0,
-                            "Sistema Actualizado."
-                        ]
-                    }
-                ],
-                "span": 0
+                "code": 402,
+                "indent": 0,
+                "parameters": [
+                    0,
+                    "Confirmación para EC 2."
+                ]
             },
             {
-                "conditions": {},
-                "list": [
-                    {
-                        "code": 101,
-                        "indent": 0,
-                        "parameters": [
-                            "",
-                            0,
-                            0,
-                            2,
-                            "Por favor, guarda tu partida."
-                        ]
-                    },
-                    {
-                        "code": 401,
-                        "indent": 0,
-                        "parameters": [
-                            "¡Datos no guardados podrían perderse!"
-                        ]
-                    }
-                ],
-                "span": 0
+                "code": 101,
+                "indent": 1,
+                "parameters": [
+                    "Portrait",
+                    1,
+                    1,
+                    2,
+                    "Anuncio importante para todo el sistema."
+                ]
             }
-        ]
+        ],
+        "name": "CE_Sample_DirectList_2",
+        "switchId": 2,
+        "trigger": 1
     },
     {
         "id": 3,
-        "name": "CE_Empty_Event",
-        "pages": [
+        "list": [
             {
-                "conditions": {},
-                "list": [
-                    {
-                        "code": 0,
-                        "indent": 0,
-                        "parameters": []
-                    }
-                ],
-                "span": 0
+                "code": 0,
+                "indent": 0,
+                "parameters": []
             }
-        ]
+        ],
+        "name": "CE_Empty_List",
+        "switchId": 3,
+        "trigger": 0
+    },
+    {
+        "id": 4,
+        "name": "CE_No_List_At_All",
+        "switchId": 4,
+        "trigger": 0
     }
 ]

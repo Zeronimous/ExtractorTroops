@@ -50,101 +50,102 @@ def process_json_file(filepath):
         print(f"Warning: Root of JSON in {base_filename} is not a list. Skipping file.") # Generic, good.
         return None, None
 
-    for i, troop_object in enumerate(root_list): # troop_object will be a common_event_object if CommonEvents.json is structured like Troops.json
-        if troop_object is None:
+    # For CommonEvents.json, each item in root_list is a common_event_object,
+    # and it directly contains a "list" of event commands.
+    for i, common_event_obj in enumerate(root_list):
+        if common_event_obj is None:
+            # print(f"Info: Item at root index {i} in {base_filename} is null. Skipping.")
             continue
-        if not isinstance(troop_object, dict):
-            continue
-        # This logic MUST remain for extract_commonevents.py to be identical to extract_troops.py in terms of JSON structure expectation
-        if "pages" not in troop_object or not isinstance(troop_object["pages"], list):
+        if not isinstance(common_event_obj, dict):
+            # print(f"Warning: Item at root index {i} in {base_filename} is not a dictionary. Skipping.")
             continue
 
-        for j, page_obj in enumerate(troop_object["pages"]):
-            if not isinstance(page_obj, dict):
-                continue
-            if "list" not in page_obj or not isinstance(page_obj["list"], list):
-                continue
+        # CommonEvents have a "list" of commands directly under the main object.
+        event_list = common_event_obj.get("list")
+        if not isinstance(event_list, list):
+            # print(f"Warning: No 'list' of event commands found for common event at index {i} in {base_filename}. Skipping.")
+            continue
 
-            for k, event_cmd in enumerate(page_obj["list"]):
-                # --- Start of outer try-except for each event_cmd ---
-                try:
-                    if not isinstance(event_cmd, dict) or "code" not in event_cmd:
-                        continue
-
-                    code = event_cmd.get("code")
-                    indent = event_cmd.get("indent", 0)
-                    parameters = event_cmd.get("parameters")
-
-                    # Centralized parameter list check for relevant codes
-                    # Log messages here use T:{i} P:{j} E:{k} - this is fine as per requirement to keep logic identical.
-                    # If CommonEvents.json is processed, and it *happens* to have this structure, T stands for Top-level index.
-                    if code in [101, 102, 401, 402]:
-                        if not isinstance(parameters, list):
-                            print(f"Warning: Parameters not a list for event at T:{i} P:{j} E:{k}. Code: {code}, Params: {parameters}. Skipping.")
-                            continue
-                        if not parameters:
-                             print(f"Warning: Parameters list is empty for event at T:{i} P:{j} E:{k}. Code: {code}. Skipping.")
-                             continue
-
-
-                    text_to_extract_single = None
-                    json_path_str_single = None
-
-                    if code == 101:
-                        if not isinstance(parameters[-1], str):
-                            print(f"Warning: Invalid params for code 101 at T:{i} P:{j} E:{k}. Params: {parameters}. Expected string at end. Skipping.")
-                            continue
-                        text_to_extract_single = parameters[-1]
-                        if not text_to_extract_single:
-                            print(f"Info: Empty string for code 101 at T:{i} P:{j} E:{k}. Params: {parameters}. Skipping.")
-                            continue
-                        json_path_str_single = f"$[{i}].pages[{j}].list[{k}].parameters[{len(parameters) - 1}]" # JSONPath identical
-
-                    elif code == 102:
-                        if not isinstance(parameters[0], list):
-                            print(f"Warning: Invalid params for code 102 at T:{i} P:{j} E:{k}. Params: {parameters}. Expected sub-list at start. Skipping.")
-                            continue
-                        texts_array = parameters[0]
-                        for param_idx, text_item in enumerate(texts_array):
-                            if not isinstance(text_item, str):
-                                print(f"Warning: Non-string item in sub-array for code 102 at T:{i} P:{j} E:{k}. Params: {parameters}, Item: {text_item}. Skipping item.")
-                                continue
-
-                            current_json_path = f"$[{i}].pages[{j}].list[{k}].parameters[0][{param_idx}]" # JSONPath identical
-                            tsv_extracted_data.append([list_num_counter, code, indent, text_item])
-                            map_extracted_data.append({"list_num": list_num_counter, "json_path": current_json_path})
-                            list_num_counter += 1
-                        continue
-
-                    elif code == 401:
-                        if not isinstance(parameters[0], str):
-                            print(f"Warning: Invalid params for code 401 at T:{i} P:{j} E:{k}. Params: {parameters}. Expected string at start. Skipping.")
-                            continue
-                        text_to_extract_single = parameters[0]
-                        if not text_to_extract_single:
-                             print(f"Info: Empty string for code 401 at T:{i} P:{j} E:{k}. Params: {parameters}. Skipping.")
-                             continue
-                        json_path_str_single = f"$[{i}].pages[{j}].list[{k}].parameters[0]" # JSONPath identical
-
-                    elif code == 402:
-                        if not isinstance(parameters[-1], str):
-                            print(f"Warning: Invalid params for code 402 at T:{i} P:{j} E:{k}. Params: {parameters}. Expected string at end. Skipping.")
-                            continue
-                        text_to_extract_single = parameters[-1]
-                        if not text_to_extract_single:
-                             print(f"Info: Empty string for code 402 at T:{i} P:{j} E:{k}. Params: {parameters}. Skipping.")
-                             continue
-                        json_path_str_single = f"$[{i}].pages[{j}].list[{k}].parameters[{len(parameters) - 1}]" # JSONPath identical
-
-                    if text_to_extract_single is not None and json_path_str_single is not None:
-                        tsv_extracted_data.append([list_num_counter, code, indent, text_to_extract_single])
-                        map_extracted_data.append({"list_num": list_num_counter, "json_path": json_path_str_single})
-                        list_num_counter += 1
-
-                except Exception as e:
-                    print(f"Warning: Unexpected error processing event at T:{i} P:{j} E:{k}. Code: {event_cmd.get('code')}, Params: {event_cmd.get('parameters')}. Error: {e}. Skipping.")
+        for k, event_cmd in enumerate(event_list):
+            # --- Start of outer try-except for each event_cmd ---
+            try:
+                if not isinstance(event_cmd, dict) or "code" not in event_cmd:
                     continue
-                # --- End of outer try-except for each event_cmd ---
+
+                code = event_cmd.get("code")
+                indent = event_cmd.get("indent", 0)
+                parameters = event_cmd.get("parameters")
+
+                # Centralized parameter list check for relevant codes
+                if code in [101, 102, 401, 402]:
+                    if not isinstance(parameters, list):
+                        print(f"Warning: Parameters not a list for event at CE:{i} Cmd:{k}. Code: {code}, Params: {parameters}. Skipping.")
+                        continue
+                    if not parameters:
+                         print(f"Warning: Parameters list is empty for event at CE:{i} Cmd:{k}. Code: {code}. Skipping.")
+                         continue
+
+                text_to_extract_single = None
+                json_path_str_single = None
+
+                # JSONPath for CommonEvents: $[i].list[k]...
+                path_prefix = f"$[{i}].list[{k}]"
+
+                if code == 101:
+                    if not isinstance(parameters[-1], str):
+                        print(f"Warning: Invalid params for code 101 at {path_prefix}. Params: {parameters}. Expected string at end. Skipping.")
+                        continue
+                    text_to_extract_single = parameters[-1]
+                    if not text_to_extract_single:
+                        print(f"Info: Empty string for code 101 at {path_prefix}. Params: {parameters}. Skipping.")
+                        continue
+                    json_path_str_single = f"{path_prefix}.parameters[{len(parameters) - 1}]"
+
+                elif code == 102:
+                    if not isinstance(parameters[0], list):
+                        print(f"Warning: Invalid params for code 102 at {path_prefix}. Params: {parameters}. Expected sub-list at start. Skipping.")
+                        continue
+                    texts_array = parameters[0]
+                    for param_idx, text_item in enumerate(texts_array):
+                        if not isinstance(text_item, str):
+                            print(f"Warning: Non-string item in sub-array for code 102 at {path_prefix}. Params: {parameters}, Item: {text_item}. Skipping item.")
+                            continue
+
+                        current_json_path = f"{path_prefix}.parameters[0][{param_idx}]"
+                        tsv_extracted_data.append([list_num_counter, code, indent, text_item])
+                        map_extracted_data.append({"list_num": list_num_counter, "json_path": current_json_path})
+                        list_num_counter += 1
+                    continue
+
+                elif code == 401:
+                    if not isinstance(parameters[0], str):
+                        print(f"Warning: Invalid params for code 401 at {path_prefix}. Params: {parameters}. Expected string at start. Skipping.")
+                        continue
+                    text_to_extract_single = parameters[0]
+                    if not text_to_extract_single:
+                         print(f"Info: Empty string for code 401 at {path_prefix}. Params: {parameters}. Skipping.")
+                         continue
+                    json_path_str_single = f"{path_prefix}.parameters[0]"
+
+                elif code == 402:
+                    if not isinstance(parameters[-1], str):
+                        print(f"Warning: Invalid params for code 402 at {path_prefix}. Params: {parameters}. Expected string at end. Skipping.")
+                        continue
+                    text_to_extract_single = parameters[-1]
+                    if not text_to_extract_single:
+                         print(f"Info: Empty string for code 402 at {path_prefix}. Params: {parameters}. Skipping.")
+                         continue
+                    json_path_str_single = f"{path_prefix}.parameters[{len(parameters) - 1}]"
+
+                if text_to_extract_single is not None and json_path_str_single is not None:
+                    tsv_extracted_data.append([list_num_counter, code, indent, text_to_extract_single])
+                    map_extracted_data.append({"list_num": list_num_counter, "json_path": json_path_str_single})
+                    list_num_counter += 1
+
+            except Exception as e:
+                print(f"Warning: Unexpected error processing event at CE:{i} Cmd:{k}. Code: {event_cmd.get('code')}, Params: {event_cmd.get('parameters')}. Error: {e}. Skipping.")
+                continue
+            # --- End of outer try-except for each event_cmd ---
 
     # Write TSV file
     if tsv_extracted_data:
