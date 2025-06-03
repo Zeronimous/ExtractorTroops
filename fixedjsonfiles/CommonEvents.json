@@ -1,0 +1,109 @@
+[
+    null,
+    {
+        "id": 1,
+        "name": "CE_Welcome_Message",
+        "pages": [
+            {
+                "conditions": {},
+                "list": [
+                    {
+                        "code": 101,
+                        "indent": 0,
+                        "parameters": [
+                            "Actor1_Portrait",
+                            0,
+                            0,
+                            2,
+                            "¡Hola desde Evento Común 1!"
+                        ]
+                    },
+                    {
+                        "code": 401,
+                        "indent": 0,
+                        "parameters": [
+                            "Este es un mensaje compartido disponible para todos."
+                        ]
+                    },
+                    {
+                        "code": 102,
+                        "indent": 1,
+                        "parameters": [
+                            [
+                                "Siguiente",
+                                "Quizás Más Tarde",
+                                "Nunca"
+                            ],
+                            1,
+                            0,
+                            2,
+                            0
+                        ]
+                    }
+                ],
+                "span": 0
+            }
+        ]
+    },
+    {
+        "id": 2,
+        "name": "CE_System_Alert",
+        "pages": [
+            {
+                "conditions": {},
+                "list": [
+                    {
+                        "code": 402,
+                        "indent": 0,
+                        "parameters": [
+                            0,
+                            "Sistema Actualizado."
+                        ]
+                    }
+                ],
+                "span": 0
+            },
+            {
+                "conditions": {},
+                "list": [
+                    {
+                        "code": 101,
+                        "indent": 0,
+                        "parameters": [
+                            "",
+                            0,
+                            0,
+                            2,
+                            "Por favor, guarda tu partida."
+                        ]
+                    },
+                    {
+                        "code": 401,
+                        "indent": 0,
+                        "parameters": [
+                            "¡Datos no guardados podrían perderse!"
+                        ]
+                    }
+                ],
+                "span": 0
+            }
+        ]
+    },
+    {
+        "id": 3,
+        "name": "CE_Empty_Event",
+        "pages": [
+            {
+                "conditions": {},
+                "list": [
+                    {
+                        "code": 0,
+                        "indent": 0,
+                        "parameters": []
+                    }
+                ],
+                "span": 0
+            }
+        ]
+    }
+]

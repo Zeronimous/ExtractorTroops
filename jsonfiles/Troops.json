@@ -10,21 +10,21 @@
         "list": [
           {"code": 333, "indent": 0, "parameters": [2,0,40]},
           {"code": 355, "indent": 0, "parameters": ["$gameSystem.setWindowskin(\"Window2\");"]},
-          {"code": 101, "indent": 0, "parameters": ["Portrait_mp1", 0, 0, 2, "Original NPC Name"]}, 
+          {"code": 101, "indent": 0, "parameters": ["Portrait_mp1", 0, 0, 2, "Original NPC Name"]},
           {"code": 401, "indent": 0, "parameters": ["This is a test message."]},
           {"code": 102, "indent": 0, "parameters": [["Option1", "Option2", "Option3"], 0, 0, 2, 0]},
           {"code": 402, "indent": 0, "parameters": [0, "An acknowledgement."]},
-          
-          {"code": 101, "indent": 0, "parameters": "not_a_list"}, 
-          {"code": 101, "indent": 0, "parameters": ["item1", 123]}, 
-          {"code": 101, "indent": 0, "parameters": []}, 
+
+          {"code": 101, "indent": 0, "parameters": "not_a_list"},
+          {"code": 101, "indent": 0, "parameters": ["item1", 123]},
+          {"code": 101, "indent": 0, "parameters": []},
           {"code": 102, "indent": 0, "parameters": "not_a_list_for_102"},
-          {"code": 102, "indent": 0, "parameters": ["not_a_sublist"]}, 
+          {"code": 102, "indent": 0, "parameters": ["not_a_sublist"]},
           {"code": 102, "indent": 0, "parameters": [["valid_string", 12345, "another_valid"]]},
-          {"code": 401, "indent": 0, "parameters": [false]}, 
-          {"code": 402, "indent": 0, "parameters": [1, true]}, 
-          {"code": 101, "indent": 0, "parameters": ["text_is_empty_string", ""]}, 
-          
+          {"code": 401, "indent": 0, "parameters": [false]},
+          {"code": 402, "indent": 0, "parameters": [1, true]},
+          {"code": 101, "indent": 0, "parameters": ["text_is_empty_string", ""]},
+
           {"code": 0, "indent": 0, "parameters": []}
         ],
         "span": 0
@@ -39,7 +39,7 @@
       {
         "conditions": {},
         "list": [
-          {"code": 101, "indent": 1, "parameters": ["", 0, 0, 2, ""]}, 
+          {"code": 101, "indent": 1, "parameters": ["", 0, 0, 2, ""]},
           {"code": 401, "indent": 1, "parameters": ["You are on the verge of an emotional breakdown."]},
           {"code": 101, "indent": 1, "parameters": ["Face2", 1, 2, 2, "Another speaker here."]}
         ],

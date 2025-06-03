@@ -90,7 +90,7 @@ def process_tsv_file_with_map(tsv_filepath):
                 # Updated error message for missing columns
                 print(f"Warning: TSV file {base_tsv_filename} is missing 'ListNum' or 'Text' column. Error: {e}. Skipping.")
                 return
-            
+
             for row_idx, row in enumerate(reader):
                 if len(row) <= max(listnum_col_idx, text_col_idx):
                     print(f"Warning: Row {row_idx + 1} in {base_tsv_filename} is shorter than expected. Skipping row.")
@@ -101,19 +101,19 @@ def process_tsv_file_with_map(tsv_filepath):
                 except ValueError:
                     print(f"Warning: Invalid ListNum '{row[listnum_col_idx]}' in row {row_idx + 1} of {base_tsv_filename}. Skipping row.")
                     continue
-                
+
                 # This is now the (potentially) translated text
                 translated_text_from_text_column = row[text_col_idx]
 
                 if not translated_text_from_text_column: # Skip if text (translation) is empty
                     # print(f"Info: Text (translation) is empty for ListNum {list_num_from_tsv} in {base_tsv_filename}. Skipping update.")
                     continue
-                
+
                 json_path_str = mappings.get(list_num_from_tsv)
                 if not json_path_str:
                     print(f"Warning: ListNum {list_num_from_tsv} from TSV row {row_idx + 1} not found in map file {map_filename}. Skipping update for this row.")
                     continue
-                
+
                 try:
                     jsonpath_expr = jsonpath_parse(json_path_str)
                     matches = jsonpath_expr.update(modified_json_data, translated_text_from_text_column)
@@ -155,7 +155,7 @@ def main():
     if not os.path.exists(tsvfiles_dir):
         print(f"Error: Input TSV/Map directory '{tsvfiles_dir}' does not exist. Exiting.")
         return
-    
+
     if not os.path.exists(jsonfiles_dir):
         print(f"Error: Original JSON directory '{jsonfiles_dir}' does not exist. Exiting.")
         return
@@ -167,7 +167,7 @@ def main():
             if os.path.isfile(full_tsv_path):
                 process_tsv_file_with_map(full_tsv_path)
                 processed_files +=1
-    
+
     if processed_files == 0:
         print("No TSV files found in the tsvfiles directory to process.")
 

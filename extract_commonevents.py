@@ -31,30 +31,31 @@ def process_json_file(filepath):
     list_num_counter = 1
 
     base_filename = os.path.basename(filepath)
-    print(f"Processing file: {base_filename}")
+    print(f"Processing file: {base_filename}") # Generic, good.
 
     try:
         with open(filepath, 'r', encoding='utf-8') as f:
             root_list = json.load(f)
     except FileNotFoundError:
-        print(f"Warning: File {base_filename} not found in {jsonfiles_dir}. Skipping.")
+        print(f"Warning: File {base_filename} not found in {jsonfiles_dir}. Skipping.") # Generic, good.
         return None, None
     except json.JSONDecodeError as e:
-        print(f"Warning: Could not decode JSON from {base_filename}. Error: {e}. Skipping file.")
+        print(f"Warning: Could not decode JSON from {base_filename}. Error: {e}. Skipping file.") # Generic, good.
         return None, None
     except Exception as e:
-        print(f"Warning: An unexpected error occurred while opening {base_filename}. Error: {e}. Skipping file.")
+        print(f"Warning: An unexpected error occurred while opening {base_filename}. Error: {e}. Skipping file.") # Generic, good.
         return None, None
 
     if not isinstance(root_list, list):
-        print(f"Warning: Root of JSON in {base_filename} is not a list. Skipping file.")
+        print(f"Warning: Root of JSON in {base_filename} is not a list. Skipping file.") # Generic, good.
         return None, None
 
-    for i, troop_object in enumerate(root_list):
+    for i, troop_object in enumerate(root_list): # troop_object will be a common_event_object if CommonEvents.json is structured like Troops.json
         if troop_object is None:
             continue
         if not isinstance(troop_object, dict):
             continue
+        # This logic MUST remain for extract_commonevents.py to be identical to extract_troops.py in terms of JSON structure expectation
         if "pages" not in troop_object or not isinstance(troop_object["pages"], list):
             continue
 
@@ -63,7 +64,7 @@ def process_json_file(filepath):
                 continue
             if "list" not in page_obj or not isinstance(page_obj["list"], list):
                 continue
-            
+
             for k, event_cmd in enumerate(page_obj["list"]):
                 # --- Start of outer try-except for each event_cmd ---
                 try:
@@ -75,17 +76,19 @@ def process_json_file(filepath):
                     parameters = event_cmd.get("parameters")
 
                     # Centralized parameter list check for relevant codes
-                    if code in [101, 102, 401, 402]: # Codes that require parameters
+                    # Log messages here use T:{i} P:{j} E:{k} - this is fine as per requirement to keep logic identical.
+                    # If CommonEvents.json is processed, and it *happens* to have this structure, T stands for Top-level index.
+                    if code in [101, 102, 401, 402]:
                         if not isinstance(parameters, list):
                             print(f"Warning: Parameters not a list for event at T:{i} P:{j} E:{k}. Code: {code}, Params: {parameters}. Skipping.")
                             continue
-                        if not parameters: # Check if parameters list is empty
+                        if not parameters:
                              print(f"Warning: Parameters list is empty for event at T:{i} P:{j} E:{k}. Code: {code}. Skipping.")
                              continue
 
 
-                    text_to_extract_single = None # For codes 101, 401, 402
-                    json_path_str_single = None   # For codes 101, 401, 402
+                    text_to_extract_single = None
+                    json_path_str_single = None
 
                     if code == 101:
                         if not isinstance(parameters[-1], str):
@@ -95,8 +98,8 @@ def process_json_file(filepath):
                         if not text_to_extract_single:
                             print(f"Info: Empty string for code 101 at T:{i} P:{j} E:{k}. Params: {parameters}. Skipping.")
                             continue
-                        json_path_str_single = f"$[{i}].pages[{j}].list[{k}].parameters[{len(parameters) - 1}]"
-                    
+                        json_path_str_single = f"$[{i}].pages[{j}].list[{k}].parameters[{len(parameters) - 1}]" # JSONPath identical
+
                     elif code == 102:
                         if not isinstance(parameters[0], list):
                             print(f"Warning: Invalid params for code 102 at T:{i} P:{j} E:{k}. Params: {parameters}. Expected sub-list at start. Skipping.")
@@ -106,24 +109,22 @@ def process_json_file(filepath):
                             if not isinstance(text_item, str):
                                 print(f"Warning: Non-string item in sub-array for code 102 at T:{i} P:{j} E:{k}. Params: {parameters}, Item: {text_item}. Skipping item.")
                                 continue
-                            
-                            # For code 102, append directly and increment counter
-                            current_json_path = f"$[{i}].pages[{j}].list[{k}].parameters[0][{param_idx}]"
+
+                            current_json_path = f"$[{i}].pages[{j}].list[{k}].parameters[0][{param_idx}]" # JSONPath identical
                             tsv_extracted_data.append([list_num_counter, code, indent, text_item])
                             map_extracted_data.append({"list_num": list_num_counter, "json_path": current_json_path})
                             list_num_counter += 1
-                        continue # Code 102 handles its own appends, skip common append logic
+                        continue
 
                     elif code == 401:
                         if not isinstance(parameters[0], str):
                             print(f"Warning: Invalid params for code 401 at T:{i} P:{j} E:{k}. Params: {parameters}. Expected string at start. Skipping.")
                             continue
                         text_to_extract_single = parameters[0]
-                        # Ensure text is not empty, though 401 usually has content.
                         if not text_to_extract_single:
                              print(f"Info: Empty string for code 401 at T:{i} P:{j} E:{k}. Params: {parameters}. Skipping.")
                              continue
-                        json_path_str_single = f"$[{i}].pages[{j}].list[{k}].parameters[0]"
+                        json_path_str_single = f"$[{i}].pages[{j}].list[{k}].parameters[0]" # JSONPath identical
 
                     elif code == 402:
                         if not isinstance(parameters[-1], str):
@@ -133,9 +134,8 @@ def process_json_file(filepath):
                         if not text_to_extract_single:
                              print(f"Info: Empty string for code 402 at T:{i} P:{j} E:{k}. Params: {parameters}. Skipping.")
                              continue
-                        json_path_str_single = f"$[{i}].pages[{j}].list[{k}].parameters[{len(parameters) - 1}]"
+                        json_path_str_single = f"$[{i}].pages[{j}].list[{k}].parameters[{len(parameters) - 1}]" # JSONPath identical
 
-                    # Common append logic for codes 101, 401, 402
                     if text_to_extract_single is not None and json_path_str_single is not None:
                         tsv_extracted_data.append([list_num_counter, code, indent, text_to_extract_single])
                         map_extracted_data.append({"list_num": list_num_counter, "json_path": json_path_str_single})
@@ -148,7 +148,7 @@ def process_json_file(filepath):
 
     # Write TSV file
     if tsv_extracted_data:
-        output_tsv_filename = os.path.splitext(base_filename)[0] + ".tsv"
+        output_tsv_filename = os.path.splitext(base_filename)[0] + ".tsv" # Generic, good.
         output_tsv_filepath = os.path.join(tsvfiles_dir, output_tsv_filename)
         try:
             with open(output_tsv_filepath, 'w', newline='', encoding='utf-8') as tsvfile:
@@ -159,14 +159,14 @@ def process_json_file(filepath):
         except IOError as e:
             print(f"Error: Could not write TSV file {output_tsv_filepath}. Error: {e}")
     else:
-        print(f"No data extracted for TSV from {base_filename}.")
+        print(f"No data extracted for TSV from {base_filename}.") # Generic, good.
 
     # Write JSON Map file
     if map_extracted_data:
-        output_map_filename = base_filename + ".map.json"
+        output_map_filename = base_filename + ".map.json" # Generic, good.
         output_map_filepath = os.path.join(tsvfiles_dir, output_map_filename)
         map_content = {
-            "original_filename": base_filename,
+            "original_filename": base_filename, # Generic, good.
             "mappings": map_extracted_data
         }
         try:
@@ -176,8 +176,8 @@ def process_json_file(filepath):
         except IOError as e:
             print(f"Error: Could not write JSON Map file {output_map_filepath}. Error: {e}")
     else:
-         print(f"No data extracted for JSON Map from {base_filename}.")
-    
+         print(f"No data extracted for JSON Map from {base_filename}.") # Generic, good.
+
     return tsv_extracted_data, map_extracted_data
 
 def main():
@@ -190,8 +190,11 @@ def main():
         if filename.endswith(".json") and not filename.endswith(".map.json"):
             full_path = os.path.join(jsonfiles_dir, filename)
             if os.path.isfile(full_path):
-                if filename == "Troops.json": # Process only Troops.json for this task
+                if filename == "CommonEvents.json": # MODIFIED: Target filename changed
                     process_json_file(full_path)
+                # else:
+                #    print(f"Skipping file {filename} as it's not CommonEvents.json.")
+
 
 if __name__ == "__main__":
     main()

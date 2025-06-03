@@ -1,0 +1,52 @@
+[
+  null,
+  {
+    "id": 1,
+    "name": "CE_Welcome_Message",
+    "pages": [
+      {
+        "conditions": {},
+        "list": [
+          {"code": 101, "indent": 0, "parameters": ["Actor1_Portrait", 0, 0, 2, "Hello from Common Event 1!"]},
+          {"code": 401, "indent": 0, "parameters": ["This is a shared message available to all."]},
+          {"code": 102, "indent": 1, "parameters": [["Next", "Maybe Later", "Never"], 1, 0, 2, 0]}
+        ],
+        "span": 0
+      }
+    ]
+  },
+  {
+    "id": 2,
+    "name": "CE_System_Alert",
+    "pages": [
+      {
+        "conditions": {},
+        "list": [
+          {"code": 402, "indent": 0, "parameters": [0, "System Updated."]}
+        ],
+        "span": 0
+      },
+      {
+        "conditions": {},
+        "list": [
+          {"code": 101, "indent": 0, "parameters": ["", 0, 0, 2, "Please save your game."]},
+          {"code": 401, "indent": 0, "parameters": ["Unsaved data may be lost!"]}
+        ],
+        "span": 0
+      }
+    ]
+  },
+  {
+    "id": 3,
+    "name": "CE_Empty_Event",
+    "pages": [
+      {
+        "conditions": {},
+        "list": [
+          {"code": 0, "indent": 0, "parameters": []}
+        ],
+        "span": 0
+      }
+    ]
+  }
+]
